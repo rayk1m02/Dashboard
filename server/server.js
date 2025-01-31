@@ -7,11 +7,12 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Same-Origin Policy and Cross-Origin Resource Sharing
+// Tells server which domains are allowed to make requests to this server
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? 'https://vercel.com/rayk1m02s-projects/dashboard/D97au1ZtLSHJkitDWn2MqteQ4hz9'
+    ? 'https://dashboard-27t55qx9h-rayk1m02s-projects.vercel.app'
     : 'http://localhost:3000'
-    https://dashboard-27t55qx9h-rayk1m02s-projects.vercel.app
 }));
 
 app.get('/api/stock', (req, res) => {

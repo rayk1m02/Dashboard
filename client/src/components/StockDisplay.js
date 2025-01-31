@@ -8,6 +8,7 @@ function StockDisplay() {
   useEffect(() => {
     const fetchStockData = async () => {
       try {
+        // In production, REACT_APP_API_URL will be the Render backend URL
         const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
         const response = await axios.get(`${baseUrl}/api/stock`);
         setStockData(response.data);
