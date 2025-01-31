@@ -9,8 +9,9 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? 'https://your-vercel-frontend-url.vercel.app'
+    ? 'https://vercel.com/rayk1m02s-projects/dashboard/D97au1ZtLSHJkitDWn2MqteQ4hz9'
     : 'http://localhost:3000'
+    https://dashboard-27t55qx9h-rayk1m02s-projects.vercel.app
 }));
 
 app.get('/api/stock', (req, res) => {
