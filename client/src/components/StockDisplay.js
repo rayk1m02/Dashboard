@@ -8,8 +8,8 @@ function StockDisplay() {
   useEffect(() => {
     const fetchStockData = async () => {
       try {
-        // In production, this URL will be Render backend URL
-        const response = await axios.get('http://localhost:5000/api/stock');
+        const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+        const response = await axios.get(`${baseUrl}/api/stock`);
         setStockData(response.data);
       } catch (err) {
         setError('Failed to fetch stock data');
