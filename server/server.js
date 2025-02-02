@@ -10,9 +10,9 @@ const PORT = process.env.PORT || 5000;
 // Same-Origin Policy and Cross-Origin Resource Sharing
 // Tells server which domains are allowed to make requests to this server
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? 'https://stocks-dashboard-coral.vercel.app'
-    : 'http://localhost:3000'
+  origin: ['https://stocks-dashboard-coral.vercel.app', 'http://localhost:3000'],
+  methods: ['GET', 'POST'],
+  credentials: true
 }));
 
 app.get('/test', (req, res) => {
@@ -54,6 +54,18 @@ app.get('/api/stock', (req, res) => {
   });
 
   apiReq.end();
+});
+
+// Add error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Error:', err);
+  res.status(500).json({ error: err.message });
+});
+
+// Add request logging
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path} - ${new Date().toISOString()}`);
+  next();
 });
 
 app.listen(PORT, () => {
