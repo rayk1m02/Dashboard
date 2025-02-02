@@ -23,14 +23,30 @@ app.get('/api/stock', (req, res) => {
   console.log('Received request for stock data');
   const symbol = req.query.symbol || 'PFE'; // testing Pfizer stock first
   console.log('Using symbol:', symbol);
-  const apiKey = process.env.TWELVE_DATA_API_KEY;
-  const path = "/time_series?apikey=9705b0018bde490181abf8a84cd6a300&technicalIndicator=ad&symbol=PFE&interval=1month&country=US&exchange=NYSE&type=stock&outputsize=10&start_date=2024-08-02 09:30:00&end_date=2025-01-30 16:00:00&format=json";
+  
+  // Create the path with proper URL encoding
+  const params = new URLSearchParams({
+    apikey: '9705b0018bde490181abf8a84cd6a300',
+    technicalIndicator: 'ad',
+    symbol: 'PFE',
+    interval: '1month',
+    country: 'US',
+    exchange: 'NYSE',
+    type: 'stock',
+    outputsize: '10',
+    start_date: '2024-08-02 09:30:00',
+    end_date: '2025-01-30 16:00:00',
+    format: 'json'
+  });
+
   const options = {
     method: 'GET',
     hostname: 'api.twelvedata.com',
     port: null,
-    path: path,
+    path: `/time_series?${params.toString()}`
   };
+
+  console.log('Request path:', options.path); // Debug log
 
   const apiReq = https.request(options, (apiRes) => {
     let data = '';
