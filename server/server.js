@@ -15,8 +15,14 @@ app.use(cors({
     : 'http://localhost:3000'
 }));
 
+app.get('/test', (req, res) => {
+  res.json({ message: 'Server is running!' });
+});
+
 app.get('/api/stock', (req, res) => {
+  console.log('Received request for stock data');
   const symbol = req.query.symbol || 'PFE'; // testing Pfizer stock first
+  console.log('Using symbol:', symbol);
   const apiKey = process.env.TWELVE_DATA_API_KEY;
   const path = "/time_series?apikey=9705b0018bde490181abf8a84cd6a300&technicalIndicator=ad&symbol=PFE&interval=1month&country=US&exchange=NYSE&type=stock&outputsize=10&start_date=2024-08-02 09:30:00&end_date=2025-01-30 16:00:00&format=json";
   const options = {
