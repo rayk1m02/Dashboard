@@ -15,19 +15,26 @@ function StockDisplay() {
         // Original code commented out until backend is ready
         
         const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+        console.log('Attempting to fetch from:', baseUrl); // Debug log
+        
         const response = await axios.get(`${baseUrl}/api/stock`);
         setStockData(response.data);
-        
       } catch (err) {
-        setError('Failed to fetch stock data');
-        console.error(err);
+        setError(`Failed to fetch stock data: ${err.message}`);
+        console.error('Full error:', err);
       }
     };
 
     fetchStockData();
   }, []);
 
-  if (error) return <div>Error: {error}</div>;
+  if (error) return (
+    <div>
+      <h3>Error:</h3>
+      <p>{error}</p>
+      <p>API URL: {process.env.REACT_APP_API_URL}</p>
+    </div>
+  );
   if (!stockData) return <div>Loading...</div>;
 
   return (
