@@ -24,7 +24,7 @@ app.get('/api/stock', (req, res) => {
   const symbol = req.query.symbol || 'PFE'; // testing Pfizer stock first
   console.log('Using symbol:', symbol);
   
-  // Create the path with proper URL encoding
+  // Path with proper URL encoding
   const params = new URLSearchParams({
     apikey: '9705b0018bde490181abf8a84cd6a300',
     technicalIndicator: 'ad',
@@ -35,7 +35,7 @@ app.get('/api/stock', (req, res) => {
     type: 'stock',
     outputsize: '10',
     start_date: '2024-08-02 09:30:00',
-    end_date: '2025-01-30 16:00:00',
+    end_date: new Date().toISOString().split('T').join(' ').split('..')[0],
     format: 'json'
   });
 
