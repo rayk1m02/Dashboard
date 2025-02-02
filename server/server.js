@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 // Tells server which domains are allowed to make requests to this server
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? 'https://dashboard-27t55qx9h-rayk1m02s-projects.vercel.app'
+    ? 'https://stocks-dashboard-coral.vercel.app/'
     : 'http://localhost:3000'
 }));
 
