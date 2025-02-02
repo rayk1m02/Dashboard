@@ -10,14 +10,14 @@ function StockDisplay() {
       try {
         // In production, REACT_APP_API_URL will be the Render backend URLd
         // Temporarily comment out the API call until backend is ready
-        setStockData({ message: "Backend API not yet connected" });
+        // setStockData({ message: "Backend API not yet connected" });
         
         // Original code commented out until backend is ready
-        /*
+        
         const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
         const response = await axios.get(`${baseUrl}/api/stock`);
         setStockData(response.data);
-        */
+        
       } catch (err) {
         setError('Failed to fetch stock data');
         console.error(err);
