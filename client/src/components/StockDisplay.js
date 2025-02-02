@@ -8,6 +8,7 @@ function StockDisplay() {
   useEffect(() => {
     const fetchStockData = async () => {
       try {
+        // In production, REACT_APP_API_URL will be the Render backend URLd
         // Temporarily comment out the API call until backend is ready
         setStockData({ message: "Backend API not yet connected" });
         
