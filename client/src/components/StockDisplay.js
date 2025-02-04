@@ -49,9 +49,9 @@ function StockDisplay() {
   if (!stockData) return <div>Loading...</div>;
 
   return (
-    <div className="p-4 max-w-xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Stock Data</h2>
-      <pre className="bg-gray-100 p-4 rounded">{JSON.stringify(stockData, null, 2)}</pre>
+    <div>
+      <h2>Stock Data</h2>
+      <pre>{JSON.stringify(stockData, null, 2)}</pre>
     </div>
   );
 }
