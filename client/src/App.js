@@ -1,6 +1,6 @@
 import './App.css';
 import StockChart from './components/StockChart';
-import StockList from './components/StockList';
+import StockPanel from './components/StockPanel';
 import SentimentAnalysis from './components/SentimentAnalysis';
 
 function App() {
