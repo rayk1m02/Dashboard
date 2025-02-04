@@ -18,7 +18,7 @@ function App() {
         
         {/* Stock list - takes 1 column */}
         <div className="col-span-1 bg-white rounded-lg shadow">
-          <StockList />
+          <StockPanel />
         </div>
         
         {/* Sentiment analysis - spans 3 columns */}
