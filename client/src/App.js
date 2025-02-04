@@ -1,7 +1,7 @@
 import './App.css';
 import StockChart from './components/StockChart';
 import StockPanel from './components/StockPanel';
-import SentimentAnalysis from './components/SentimentAnalysis';
+import SentimentPanel from './components/SentimentPanel';
 
 function App() {
   return (
@@ -23,7 +23,7 @@ function App() {
         
         {/* Sentiment analysis - spans 3 columns */}
         <div className="col-span-3 bg-white rounded-lg shadow p-4">
-          <SentimentAnalysis />
+          <SentimentPanel />
         </div>
         
         {/* Empty space for future use */}
