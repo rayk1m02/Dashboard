@@ -12,33 +12,33 @@ import {
 } from 'chart.js';
 
 ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
+  CategoryScale, // for the x-axis labels (time (month, weeks, days, hrs, etc))
+  LinearScale, // for the y-axis numbers (stock price)
+  PointElement, // for the dots on the line
+  LineElement, // for the actual line
+  Title, // chart title
+  Tooltip, // tooltip when hovering over a data point
+  Legend // legend for chart
 );
 
 function StockChart() {
-  // Sample data - replace with your actual data
+  // Sample data 
   const data = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'], // x-axis labels
     datasets: [
       {
-        label: 'Stock Price',
-        data: [65, 59, 80, 81, 56],
-        fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1,
+        label: 'Stock Price', /// legend label
+        data: [65, 59, 80, 81, 56], // y-axis values
+        fill: true, // fill area under line with color
+        borderColor: 'rgb(75, 192, 192)', // line color
+        tension: 0.1, // how curved the line is
       },
     ],
   };
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">Stock Price</h2>
+      <h2 className="text-xl font-semibold mb-4">Stock Price</h2> 
       <Line data={data} />
     </div>
   );
