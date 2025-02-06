@@ -37,7 +37,6 @@ function StockChart() {
     const fetchStockData = async () => {
       try {
         const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-        // We can add timeScale as a query parameter
         const response = await axios.get(`${baseUrl}/api/stock`, {
           params: {
             interval: TIME_PERIODS[timeScale]
@@ -45,13 +44,16 @@ function StockChart() {
         });
 
         // Check if response has the expected structure
-        if (!response.data.values) {
+        if (!response.data.values || !Array.isArray(response.data.values)) {
           throw new Error('Invalid data format received from API');
         }
         
+        // Reverse the array to show oldest to newest
+        const values = [...response.data.values].reverse();
+        
         // Transform API response into chart data format
         const chartData = {
-          labels: response.data.values.map(item => {
+          labels: values.map(item => {
             try {
               const date = new Date(item.datetime);
               if (isNaN(date)) {
@@ -59,9 +61,9 @@ function StockChart() {
               }
               // Format date based on timeScale
               if (timeScale === '1D') {
-                return date.toLocaleTimeString();
+                return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
               } else {
-                return date.toLocaleDateString();
+                return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
               }
             } catch (e) {
               console.error('Date parsing error:', e);
@@ -70,7 +72,7 @@ function StockChart() {
           }),
           datasets: [{
             label: response.data.meta?.symbol || 'Stock Price',
-            data: response.data.values.map(item => {
+            data: values.map(item => {
               const price = parseFloat(item.close);
               return isNaN(price) ? null : price;
             }),
