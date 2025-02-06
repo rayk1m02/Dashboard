@@ -76,6 +76,7 @@ app.get('/api/stock', (req, res) => {
     apiRes.on('end', () => {
       try {
         const parsedData = JSON.parse(data);
+        console.log('API Response:', parsedData);
         res.json(parsedData);
       } catch (error) {
         res.status(500).json({ error: 'Failed to parse stock data' });
