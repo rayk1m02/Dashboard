@@ -40,19 +40,21 @@ app.get('/test', (req, res) => {
 // route to get stock data from TwelveData API
 app.get('/api/stock', (req, res) => {
   const symbol = req.query.symbol || 'PFE'; // testing Pfizer stock first
+  const interval = req.query.interval || '1day';
   
   // Path with proper URL encoding
   const params = new URLSearchParams({
-    apikey: '9705b0018bde490181abf8a84cd6a300',
+    apikey: process.env.TWELVEDATA_API_KEY,
     technicalIndicator: 'ad',
     symbol: symbol,
-    interval: '1month',
+    interval: interval,
     country: 'US',
     exchange: 'NYSE',
     type: 'stock',
     outputsize: '10',
-    start_date: '2024-08-02 09:30:00',
-    end_date: new Date().toISOString().split('T').join(' ').split('..')[0], // current date
+    // one year from today
+    start_date: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    end_date: new Date().toISOString().split('T')[0],
     format: 'json'
   });
 
