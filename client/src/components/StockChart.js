@@ -27,11 +27,18 @@ function StockChart() {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'], // x-axis labels
     datasets: [
       {
-        label: 'Stock Price', /// legend label
+        label: 'Stock A', /// legend label
         data: [65, 59, 80, 81, 56], // y-axis values
-        fill: true, // fill area under line with color
+        fill: false, // fill area under line with color
         borderColor: 'rgb(75, 192, 192)', // line color
         tension: 0.1, // how curved the line is
+      },
+      {
+        label: 'Stock B',
+        data: [20, 30, 40, 50, 60],
+        fill: false,
+        borderColor: 'rgb(255, 159, 64)',
+        tension: 0.1,
       },
     ],
   };
