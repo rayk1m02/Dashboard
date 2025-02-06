@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'; 
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -17,36 +18,111 @@ ChartJS.register(
   PointElement, // for the dots on the line
   LineElement, // for the actual line
   Title, // chart title
-  Tooltip, // tooltip when hovering over a data point
-  Legend // legend for chart
+  Tooltip, // when hovering over a data point
+  Legend // shows stock names at the top
 );
 
 function StockChart() {
-  // Sample data 
-  const data = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'], // x-axis labels
-    datasets: [
-      {
-        label: 'Stock A', /// legend label
-        data: [65, 59, 80, 81, 56], // y-axis values
-        fill: false, // fill area under line with color
-        borderColor: 'rgb(75, 192, 192)', // line color
-        tension: 0.1, // how curved the line is
-      },
-      {
-        label: 'Stock B',
-        data: [20, 30, 40, 50, 60],
-        fill: false,
-        borderColor: 'rgb(255, 159, 64)',
-        tension: 0.1,
-      },
-    ],
+  const [stockData, setStockData] = useState(null);
+  const [error, setError] = useState(null);
+  const [timeScale, setTimeScale] = useState('1D');
+
+  const TIME_PERIODS = {
+    '1D': '1day',
+    '1W': '1week',
+    '1M': '1month',
   };
+
+  useEffect(() => {
+    const fetchStockData = async () => {
+      try {
+        const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+        // We can add timeScale as a query parameter
+        const response = await axios.get(`${baseUrl}/api/stock`, {
+          params: {
+            interval: TIME_PERIODS[timeScale]
+          }
+        });
+
+        // Check if response has the expected structure
+        if (!response.data.values) {
+          throw new Error('Invalid data format received from API');
+        }
+        
+        // Transform API response into chart data format
+        const chartData = {
+          labels: response.data.values.map(item => {
+            try {
+              const date = new Date(item.datetime);
+              if (isNaN(date)) {
+                throw new Error('Invalid date');
+              }
+              // Format date based on timeScale
+              if (timeScale === '1D') {
+                return date.toLocaleTimeString();
+              } else {
+                return date.toLocaleDateString();
+              }
+            } catch (e) {
+              console.error('Date parsing error:', e);
+              return item.datetime; // fallback to raw datetime string
+            }
+          }),
+          datasets: [{
+            label: response.data.meta?.symbol || 'Stock Price',
+            data: response.data.values.map(item => {
+              const price = parseFloat(item.close);
+              return isNaN(price) ? null : price;
+            }),
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+          }]
+        };
+        
+        setStockData(chartData);
+      } catch (err) {
+        setError(`Failed to fetch stock data: ${err.message}`);
+        console.error('Full error:', err);
+      }
+    };
+
+    fetchStockData();
+  }, [timeScale]); // Refetch when timeScale changes
+
+  const handleZoomChange = (period) => {
+    setTimeScale(period);
+  };
+
+  if (error) return (
+    <div>
+      <h3>Error:</h3>
+      <p>{error}</p>
+    </div>
+  );
+
+  if (!stockData) return <div>Loading...</div>;
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">Stock Price</h2> 
-      <Line data={data} />
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-semibold">Stock Price</h2>
+        <div className="flex gap-2">
+          {Object.keys(TIME_PERIODS).map((period) => (
+            <button
+              key={period}
+              onClick={() => handleZoomChange(period)}
+              className={`px-3 py-1 rounded ${
+                timeScale === period 
+                  ? 'bg-blue-500 text-white' 
+                  : 'bg-gray-200 hover:bg-gray-300'
+              }`}
+            >
+              {period}
+            </button>
+          ))}
+        </div>
+      </div>
+      <Line data={stockData} />
     </div>
   );
 }
