@@ -43,6 +43,10 @@ function StockChart() {
           }
         });
 
+        // Add these console.logs
+        console.log('Full API Response:', response);
+        console.log('Response Data:', response.data);
+
         // Check if response has the expected structure
         if (!response.data.values || !Array.isArray(response.data.values)) {
           throw new Error('Invalid data format received from API');
