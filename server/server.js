@@ -73,8 +73,8 @@ app.get('/api/stock', (req, res) => {
     path: `/time_series?${params.toString()}`
   };
 
-  // Add this log to verify the API key is being sent
-  console.log('API Request URL:', `/time_series?${params.toString()}`);
+   // Add this log to verify the API key is being sent
+   console.log('API Request URL:', `/time_series?${params.toString()}`);
 
   // make the request to the API
   const apiReq = https.request(options, (apiRes) => {
