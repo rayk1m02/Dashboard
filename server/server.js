@@ -41,6 +41,14 @@ app.get('/test', (req, res) => {
 app.get('/api/stock', (req, res) => {
   const symbol = req.query.symbol || 'PFE'; // testing Pfizer stock first
   const interval = req.query.interval || '1day';
+
+  console.log('API Key loaded:', process.env.TWELVEDATA_API_KEY ? 'Yes' : 'No');
+
+  // Make sure your API key is properly loaded from .env
+  if (!process.env.TWELVEDATA_API_KEY) {
+    console.error('API key is missing!');
+    return res.status(500).json({ error: 'API key configuration is missing' });
+  }
   
   // Path with proper URL encoding
   const params = new URLSearchParams({
@@ -64,6 +72,9 @@ app.get('/api/stock', (req, res) => {
     port: null,
     path: `/time_series?${params.toString()}`
   };
+
+  // Add this log to verify the API key is being sent
+  console.log('API Request URL:', `/time_series?${params.toString()}`);
 
   // make the request to the API
   const apiReq = https.request(options, (apiRes) => {
