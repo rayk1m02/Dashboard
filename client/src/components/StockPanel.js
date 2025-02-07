@@ -1,7 +1,7 @@
 import React from 'react';
 
 function StockPanel() {
-  const stocks = ['Stock A', 'Stock B', 'Stock C', 'Stock D', 'Stock E'];
+  const stocks = ['PFE', 'LLY', 'UNH', 'JNJ', 'NVO'];
 
   return (
     <div className="p-4">
