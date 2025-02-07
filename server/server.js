@@ -18,9 +18,13 @@ const PORT = process.env.PORT || 5000;
 app.use(cors({
   // vercel frontend requests the stock data from this server, or localhost
   origin: ['https://stocks-dashboard-coral.vercel.app', 'http://localhost:3000'],
-  methods: ['GET', 'POST'],
-  credentials: true
+  methods: ['GET', 'POST', 'OPTIONS'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-requested-with']
 }));
+
+// Add preflight handler for OPTIONS requests
+app.options('*', cors()); // Enable pre-flight for all routes
 
 // test route to ensure server is running
 app.get('/test', (req, res) => {
