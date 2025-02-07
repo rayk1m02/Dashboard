@@ -37,6 +37,7 @@ function StockChart() {
     const fetchStockData = async () => {
       try {
         const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+        console.log('Using API URL:', baseUrl); // Add this to debug
         const response = await axios.get(`${baseUrl}/api/stock`, {
           params: {
             interval: TIME_PERIODS[timeScale]
