@@ -9,10 +9,18 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Add environment variable validation
+if (!process.env.TWELVEDATA_API_KEY) {
+  console.error('ERROR: TWELVEDATA_API_KEY environment variable is not set!');
+  console.error('Please create a .env file in the server directory with your API key.');
+  console.error('Example: TWELVEDATA_API_KEY=your_api_key_here');
+  process.exit(1); // Exit the process if the API key is missing
+}
+
 // Same-Origin Policy and Cross-Origin Resource Sharing
 // Tells server which domains are allowed to make requests to this server
 app.use(cors({
-  // vercel frontend requests the stock data from this server, or localhost
+  // vercel frontend  or localhostrequests the stock data from this server file
   origin: ['https://stocks-dashboard-coral.vercel.app', 'http://localhost:3000'],
   methods: ['GET', 'POST', 'OPTIONS'],
   credentials: true,
@@ -42,14 +50,21 @@ app.get('/api/stock', (req, res) => {
   const symbol = req.query.symbol || 'PFE'; // testing Pfizer stock first
   const interval = req.query.interval || '1day';
 
-  console.log('API Key loaded:', process.env.TWELVEDATA_API_KEY ? 'Yes' : 'No');
+  console.log('Environment variables:', {
+    NODE_ENV: process.env.NODE_ENV,
+    PORT: process.env.PORT,
+    HAS_API_KEY: !!process.env.TWELVEDATA_API_KEY,
+    API_KEY_LENGTH: process.env.TWELVEDATA_API_KEY?.length
+  });
 
-  // Make sure your API key is properly loaded from .env
   if (!process.env.TWELVEDATA_API_KEY) {
     console.error('API key is missing!');
-    return res.status(500).json({ error: 'API key configuration is missing' });
+    return res.status(500).json({ 
+      error: 'API key configuration is missing',
+      details: 'Please ensure TWELVEDATA_API_KEY is set in environment variables'
+    });
   }
-  
+
   // Path with proper URL encoding
   const params = new URLSearchParams({
     apikey: process.env.TWELVEDATA_API_KEY,
