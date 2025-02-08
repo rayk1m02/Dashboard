@@ -1,9 +1,14 @@
 // loads environment variable from .env file into process.env so node.js can access them
 require('dotenv').config();
-console.log('Environment variables after loading:', {
+
+// Add this logging to help debug deployment issues
+console.log('Starting server with environment:', {
+  NODE_ENV: process.env.NODE_ENV,
   PORT: process.env.PORT,
-  TWELVEDATA_API_KEY: process.env.TWELVEDATA_API_KEY?.substring(0, 5) + '...' // Only show first 5 chars for security
+  HAS_API_KEY: !!process.env.TWELVEDATA_API_KEY,
+  RENDER: process.env.RENDER
 });
+
 // express is a web framework for node.js. Helps build a web server easily
 const express = require('express');
 // module which allows making secure HTTPS requests
@@ -25,7 +30,12 @@ if (!process.env.TWELVEDATA_API_KEY) {
 // Tells server which domains are allowed to make requests to this server
 app.use(cors({
   // vercel frontend  or localhostrequests the stock data from this server file
-  origin: ['https://stocks-dashboard-coral.vercel.app', 'http://localhost:3000'],
+  origin: [
+    'https://stocks-dashboard-coral.vercel.app', 
+    'http://localhost:3000',
+    // Add your Render URL here
+    'https://dashboard-310f.onrender.com'
+  ],
   methods: ['GET', 'POST', 'OPTIONS'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization', 'x-requested-with']
