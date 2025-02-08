@@ -1,5 +1,9 @@
 // loads environment variable from .env file into process.env so node.js can access them
 require('dotenv').config();
+console.log('Environment variables after loading:', {
+  PORT: process.env.PORT,
+  TWELVEDATA_API_KEY: process.env.TWELVEDATA_API_KEY?.substring(0, 5) + '...' // Only show first 5 chars for security
+});
 // express is a web framework for node.js. Helps build a web server easily
 const express = require('express');
 // module which allows making secure HTTPS requests
