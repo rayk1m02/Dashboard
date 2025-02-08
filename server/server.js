@@ -1,15 +1,11 @@
 // loads environment variable from .env file into process.env so node.js can access them
 require('dotenv').config();
-
 // express is a web framework for node.js. Helps build a web server easily
 const express = require('express');
-
 // module which allows making secure HTTPS requests
 const https = require('https');
-
 // cors is a middleware for handling cross-origin requests
 const cors = require('cors');
-
 const app = express();
 const PORT = process.env.PORT || 5000;
 
