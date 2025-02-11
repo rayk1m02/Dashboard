@@ -1,14 +1,6 @@
 // loads environment variable from .env file into process.env so node.js can access them
 require('dotenv').config();
 
-// Add this logging to help debug deployment issues
-console.log('Starting server with environment:', {
-  NODE_ENV: process.env.NODE_ENV,
-  PORT: process.env.PORT,
-  HAS_API_KEY: !!process.env.TWELVEDATA_API_KEY,
-  RENDER: process.env.RENDER
-});
-
 // express is a web framework for node.js. Helps build a web server easily
 const express = require('express');
 // module which allows making secure HTTPS requests
@@ -16,70 +8,36 @@ const https = require('https');
 // cors is a middleware for handling cross-origin requests
 const cors = require('cors');
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 
-// Add environment variable validation
-if (!process.env.TWELVEDATA_API_KEY) {
-  console.error('ERROR: TWELVEDATA_API_KEY environment variable is not set!');
-  console.error('Please create a .env file in the server directory with your API key.');
-  console.error('Example: TWELVEDATA_API_KEY=your_api_key_here');
-  process.exit(1); // Exit the process if the API key is missing
-}
+// Same-Origin Policy (SOP) and Cross-Origin Resource Sharing (CORS)
 
-// Same-Origin Policy and Cross-Origin Resource Sharing
-// Tells server which domains are allowed to make requests to this server
+// tells this server which domains are allowed to make requests to it
 app.use(cors({
-  // vercel frontend  or localhostrequests the stock data from this server file
-  origin: [
-    'https://stocks-dashboard-coral.vercel.app', 
-    'http://localhost:3000',
-    // Add your Render URL here
-    'https://dashboard-310f.onrender.com'
-  ],
+  // vercel frontend or local host request the stock data from this server. render requests?
+  origin: ['https://stocks-dashboard-coral.vercel.app', 'http://localhost:3000',],
   methods: ['GET', 'POST', 'OPTIONS'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization', 'x-requested-with']
 }));
 
-// Add preflight handler for OPTIONS requests
-app.options('*', cors()); // Enable pre-flight for all routes
-
-// test route to ensure server is running
-app.get('/test', (req, res) => {
-  res.json({ message: 'Server is running!' });
-});
+/** 
+ * browsers first send a preflight request using OPTIONS method to check if the actual request is allowed 
+ * this line ensures that all OPTIONS requests get the appropriate cors header
+ * effectively, it enables preflight requests for all routes in the express app
+ * maybe it is not necessary / great practice. ill try to deploy without it. 
+ */
+// app.options('*', cors()); 
 
 /**
- * eventually i need to be able to specificy what stock/symbol the user wants to retrieve
- * maybe add a param for the symbol, and then use it in API call
- * 
- * what about stock data for all stocks? do i need to call this multiple times for each stock and keep track?
- * 
- * something like this (getting symbol from URL params)
- * app.get('/api/stock/:symbol', (req, res) => {
- *    const symbol = req.params.symbol || 'some_default_stock' (maybe ALL stock view?) how tho? idk'; 
+ * implement code to account for multiple stocks
  */
 // route to get stock data from TwelveData API
 app.get('/api/stock', (req, res) => {
   const symbol = req.query.symbol || 'PFE'; // testing Pfizer stock first
   const interval = req.query.interval || '1day';
 
-  console.log('Environment variables:', {
-    NODE_ENV: process.env.NODE_ENV,
-    PORT: process.env.PORT,
-    HAS_API_KEY: !!process.env.TWELVEDATA_API_KEY,
-    API_KEY_LENGTH: process.env.TWELVEDATA_API_KEY?.length
-  });
-
-  if (!process.env.TWELVEDATA_API_KEY) {
-    console.error('API key is missing!');
-    return res.status(500).json({ 
-      error: 'API key configuration is missing',
-      details: 'Please ensure TWELVEDATA_API_KEY is set in environment variables'
-    });
-  }
-
-  // Path with proper URL encoding
+  // proper URL encoded path
   const params = new URLSearchParams({
     apikey: process.env.TWELVEDATA_API_KEY,
     technicalIndicator: 'ad',
