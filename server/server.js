@@ -21,14 +21,6 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization', 'x-requested-with']
 }));
 
-/** 
- * browsers first send a preflight request using OPTIONS method to check if the actual request is allowed 
- * this line ensures that all OPTIONS requests get the appropriate cors header
- * effectively, it enables preflight requests for all routes in the express app
- * maybe it is not necessary / great practice. ill try to deploy without it. 
- */
-// app.options('*', cors()); 
-
 /**
  * implement code to account for multiple stocks
  */
