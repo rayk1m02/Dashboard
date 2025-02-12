@@ -66,7 +66,7 @@ app.get('/api/stock', (req, res) => {
     exchange: 'NYSE',
     type: 'stock',
     //number of data points returned
-    // outputsize: '10', 
+    outputsize: '12', 
     /**
      * one year from today
      * Date.now() returns milliseconds. So today - one year in milliseconds 
