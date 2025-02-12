@@ -38,9 +38,18 @@ app.get('/api/stock', (req, res) => {
     country: 'US',
     exchange: 'NYSE',
     type: 'stock',
-    outputsize: '10',
-    // one year from today
-    start_date: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    //number of data points returned
+    outputsize: '10', 
+    /**
+     * one year from today
+     * Date.now() returns milliseconds. So today - one year in milliseconds 
+     * gives exactly one year from today
+     * 
+     * toISOString() returns ISO 8601 format - YYYY-MM-DDTHH:mm:ss.sssZ
+     * where we split by delimiter 'T', basically splitting between the date and time
+     * we only want the date part so use [0].
+     */
+    start_date: new Date(Date.now() - 365*24*60*60*1000).toISOString().split('T')[0],
     end_date: new Date().toISOString().split('T')[0],
     format: 'json'
   });
@@ -49,11 +58,9 @@ app.get('/api/stock', (req, res) => {
     method: 'GET',
     hostname: 'api.twelvedata.com',
     port: null,
-    path: `/time_series?${params.toString()}`
+    // get request url from TWELVEDATA starts with /time_series?...
+    path: `/time_series?${params.toString()}` 
   };
-
-   // Add this log to verify the API key is being sent
-   console.log('API Request URL:', `/time_series?${params.toString()}`);
 
   // make the request to the API
   const apiReq = https.request(options, (apiRes) => {
@@ -66,7 +73,6 @@ app.get('/api/stock', (req, res) => {
     apiRes.on('end', () => {
       try {
         const parsedData = JSON.parse(data);
-        console.log('API Response:', parsedData);
         res.json(parsedData);
       } catch (error) {
         res.status(500).json({ error: 'Failed to parse stock data' });
@@ -100,3 +106,105 @@ app.use((req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+/** Console logs can be seen on Render */
+
+/**
+ * API response for reference:
+ * 
+ * {
+	"meta": {
+		"symbol": "PFE",
+		"interval": "1day",
+		"currency": "USD",
+		"exchange_timezone": "America/New_York",
+		"exchange": "NYSE",
+		"mic_code": "XNYS",
+		"type": "Common Stock"
+	},
+	"values": [
+		{
+			"datetime": "2025-02-11",
+			"open": "25.83000",
+			"high": "25.91000",
+			"low": "25.46000",
+			"close": "25.53000",
+			"volume": "36540500"
+		},
+		{
+			"datetime": "2025-02-10",
+			"open": "25.78000",
+			"high": "26.12000",
+			"low": "25.51000",
+			"close": "25.87000",
+			"volume": "39632700"
+		},
+		{
+			"datetime": "2025-02-07",
+			"open": "25.86000",
+			"high": "25.96000",
+			"low": "25.53000",
+			"close": "25.74000",
+			"volume": "36512800"
+		},
+		{
+			"datetime": "2025-02-06",
+			"open": "26.42000",
+			"high": "26.47000",
+			"low": "25.78000",
+			"close": "25.83000",
+			"volume": "45182000"
+		},
+		{
+			"datetime": "2025-02-05",
+			"open": "25.95000",
+			"high": "26.69000",
+			"low": "25.70000",
+			"close": "26.44000",
+			"volume": "50426800"
+		},
+		{
+			"datetime": "2025-02-04",
+			"open": "26.10000",
+			"high": "26.92000",
+			"low": "25.60000",
+			"close": "25.87000",
+			"volume": "68748300"
+		},
+		{
+			"datetime": "2025-02-03",
+			"open": "26.30000",
+			"high": "26.47000",
+			"low": "26.15000",
+			"close": "26.20000",
+			"volume": "49626200"
+		},
+		{
+			"datetime": "2025-01-31",
+			"open": "26.96000",
+			"high": "27.010000",
+			"low": "26.42000",
+			"close": "26.52000",
+			"volume": "37338200"
+		},
+		{
+			"datetime": "2025-01-30",
+			"open": "26.66000",
+			"high": "27.010000",
+			"low": "26.58000",
+			"close": "26.91000",
+			"volume": "32289600"
+		},
+		{
+			"datetime": "2025-01-29",
+			"open": "26.80000",
+			"high": "27.070000",
+			"low": "26.57000",
+			"close": "26.62000",
+			"volume": "34418200"
+		}
+	]
+}
+ * 
+ * 
+ */
