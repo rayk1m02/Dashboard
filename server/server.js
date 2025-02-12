@@ -29,6 +29,32 @@ app.get('/api/stock', (req, res) => {
   const symbol = req.query.symbol || 'PFE'; // testing Pfizer stock first
   const interval = req.query.interval || '1day';
 
+	  // Calculate start date based on interval
+		let startDate;
+		const now = Date.now();
+	
+		switch (interval) {
+			case '1day':
+				// For intraday data, set start date to today
+				startDate = new Date(now).toISOString().split('T')[0];
+				break;
+			case '1week':
+				// For weekly data, set start date to 3 months ago
+				startDate = new Date(now - 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+				break;
+			case '1month':
+				// For monthly data, set start day to 1 year ago
+				startDate = new Date(now - 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+				break;
+			case '1year':
+				// For yearly data, set start date to 5 years ago
+				startDate = new Date(now - 5 * 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+				break;
+			default:
+				// Default to 1 day for unknown intervals
+				startDate = new Date(now).toISOString().split('T')[0];
+		}
+
   // proper URL encoded path
   const params = new URLSearchParams({
     apikey: process.env.TWELVEDATA_API_KEY,

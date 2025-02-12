@@ -58,26 +58,27 @@ function StockChart() {
         // Transform API response into chart data format
         const chartData = {
           labels: values.map(item => {
-            try {
-              const date = new Date(item.datetime);
-              if (isNaN(date)) { throw new Error('Invalid date'); }
-              // Format date based on timeScale
-              if (timeScale === '1D') {
-                return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // 12:00 PM
-              } else {
-                return date.toLocaleDateString([], { month: 'short', day: 'numeric' }); // Oct 5
-              }
-            } catch (e) {
-              console.error('Date parsing error:', e);
-              return item.datetime; // fallback to raw datetime string
+            const date = new Date(item.datetime);
+            if (interval === '1day') {
+              // Intraday: Show time
+              return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            } else if (interval === '1week') {
+              // Weekly: Show date
+              return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+            } else if (interval === '1month') {
+              // Monthly: Show month and year
+              return date.toLocaleDateString([], { month: 'short', year: 'numeric' });
+            } else if (interval === '1year') {
+              // Yearly: Show year only
+              return date.toLocaleDateString([], { year: 'numeric' });
+            } else {
+              // Fallback: Show raw datetime
+              return item.datetime;
             }
           }),
           datasets: [{
             label: response.data.meta?.symbol || 'Stock Price',
-            data: values.map(item => {
-              const price = parseFloat(item.close);
-              return isNaN(price) ? null : price;
-            }),
+            data: values.map(item => parseFloat(item.close)),
             borderColor: 'rgb(75, 192, 192)',
             tension: 0.1
           }]
