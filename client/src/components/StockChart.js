@@ -1,25 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; 
-import { Line } from 'react-chartjs-2';
+import axios from 'axios'; // library for making https requests
+/** 
+ * React wrapper for chart.js Line chart
+ * React components handle DOM manipulation and updating automatically
+ */
+import { Line } from 'react-chartjs-2'; 
 import {
   Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-} from 'chart.js';
-
-ChartJS.register(
-  CategoryScale, // for the x-axis labels (time (month, weeks, days, hrs, etc))
-  LinearScale, // for the y-axis numbers (stock price)
-  PointElement, // for the dots on the line
-  LineElement, // for the actual line
+  CategoryScale, // x-axis labels (time (month, weeks, days, hrs, etc))
+  LinearScale, // y-axis labels (stock price)
+  PointElement, // data points on the line
+  LineElement, // rendering the line
   Title, // chart title
   Tooltip, // when hovering over a data point
   Legend // shows stock names at the top
+} from 'chart.js';
+
+ChartJS.register(
+  CategoryScale, 
+  LinearScale, 
+  PointElement, 
+  LineElement, 
+  Title, 
+  Tooltip, 
+  Legend 
 );
 
 function StockChart() {
