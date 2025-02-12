@@ -1,7 +1,9 @@
 server.js 
-- 1 day interval x-axis labels are all the same
-- 1 year interval Error:
-Failed to fetch stock data: Spread syntax requires ...iterable not be null or undefined
+- 1 day interval x-axis labels are all the same 
+  - does 1 day mean stock data in days or does it mean the stock data in hours for today?
+  - it probably means stock data in days?
+      - how far back? maybe 1 week
+    - then i need to add a hours feature as well (1 hour)
 
 Change the output data size? to 12 data points?
 
