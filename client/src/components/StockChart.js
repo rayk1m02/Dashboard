@@ -59,16 +59,16 @@ function StockChart() {
         const chartData = {
           labels: values.map(item => {
             const date = new Date(item.datetime);
-            if (interval === '1day') {
+            if (TIME_PERIODS[timeScale] === '1day') {
               // Intraday: Show time
               return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            } else if (interval === '1week') {
+            } else if (TIME_PERIODS[timeScale] === '1week') {
               // Weekly: Show date
               return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
-            } else if (interval === '1month') {
+            } else if (TIME_PERIODS[timeScale] === '1month') {
               // Monthly: Show month and year
               return date.toLocaleDateString([], { month: 'short', year: 'numeric' });
-            } else if (interval === '1year') {
+            } else if (TIME_PERIODS[timeScale] === '1year') {
               // Yearly: Show year only
               return date.toLocaleDateString([], { year: 'numeric' });
             } else {
