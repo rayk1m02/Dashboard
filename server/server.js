@@ -26,6 +26,7 @@ app.use(cors({
  */
 // route to get stock data from TwelveData API
 app.get('/api/stock', (req, res) => {
+	console.log('Received request with query:', req.query); // Log the query parameters
   const symbol = req.query.symbol || 'PFE'; // testing Pfizer stock first
   const interval = req.query.interval || '1day';
 
@@ -99,8 +100,10 @@ app.get('/api/stock', (req, res) => {
     apiRes.on('end', () => {
       try {
         const parsedData = JSON.parse(data);
+				console.log('API Response:', parsedData); // Log the API response
         res.json(parsedData);
       } catch (error) {
+				console.error('Error parsing API response:', error); // Log parsing errors
         res.status(500).json({ error: 'Failed to parse stock data' });
       }
     });
@@ -108,6 +111,7 @@ app.get('/api/stock', (req, res) => {
 
   // error handling for the request
   apiReq.on('error', (error) => {
+		console.error('Error making API request:', error); // Log API request errors
     res.status(500).json({ error: 'Failed to fetch stock data' });
   });
 

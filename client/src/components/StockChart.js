@@ -41,8 +41,8 @@ function StockChart() {
   useEffect(() => {
     const fetchStockData = async () => {
       try {
-        const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-        
+        const baseUrl = process.env.REACT_APP_API_URL || 'https://dashboard-310f.onrender.com';
+        console.log('Fetching data from:', baseUrl); // Log the base URL
         const response = await axios.get(`${baseUrl}/api/stock`, {
           params: {
             interval: TIME_PERIODS[timeScale] // currently set to '1D' by default
@@ -86,6 +86,7 @@ function StockChart() {
         
         setStockData(chartData);
       } catch (err) {
+        console.error('Error fetching data:', err); // Log the error
         setError(`Failed to fetch stock data: ${err.message}`);
         console.error('Full error:', err);
       }
