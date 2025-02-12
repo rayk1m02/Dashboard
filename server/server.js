@@ -35,24 +35,24 @@ app.get('/api/stock', (req, res) => {
 		const now = Date.now();
 	
 		switch (interval) {
-			case '1day':
-				// For intraday data, set start date to today
+			case '1h':
+				// For intraday (1H) data, set start date to today
 				startDate = new Date(now).toISOString().split('T')[0];
 				break;
+			case '1day':
+				// For daily (1D) data, set start date to 1 week ago
+				startDate = new Date(now - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+				break;
 			case '1week':
-				// For weekly data, set start date to 3 months ago
+				// For weekly (1W) data, set start date to 3 months ago
 				startDate = new Date(now - 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
 				break;
 			case '1month':
-				// For monthly data, set start day to 1 year ago
+				// For monthly (1M) data, set start date to 1 year ago
 				startDate = new Date(now - 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
 				break;
-			case '1year':
-				// For yearly data, set start date to 5 years ago
-				startDate = new Date(now - 5 * 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-				break;
 			default:
-				// Default to 1 day for unknown intervals
+				// Default to today for unknown intervals
 				startDate = new Date(now).toISOString().split('T')[0];
 		}
 
