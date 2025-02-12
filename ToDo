@@ -1,12 +1,3 @@
-server.js 
-- 1 day interval x-axis labels are all the same 
-  - does 1 day mean stock data in days or does it mean the stock data in hours for today?
-  - it probably means stock data in days?
-      - how far back? maybe 1 week
-    - then i need to add a hours feature as well (1 hour)
-
-Change the output data size? to 12 data points?
-
 connect PFE in stock panel, so when user clicks it, it shows in chart
 be able to select multuple stocks
 be able to view an all stocks chart with line of best fit
