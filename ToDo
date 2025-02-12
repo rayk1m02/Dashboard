@@ -1,7 +1,7 @@
-Understand how stockchart.js currently works
+server.js 
+- startdate should dynamically change based on interval
+- the api paramaters are not being properly used together
 
-Add 1 YR time interval
-based on selected time interval, make x-axis labels reflect it and have PFE stock data respond to it 
 
 connect PFE in stock panel, so when user clicks it, it shows in chart
 be able to select multuple stocks
