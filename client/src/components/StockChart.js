@@ -35,6 +35,7 @@ function StockChart() {
     '1D': '1day',
     '1W': '1week',
     '1M': '1month',
+    '1Y': '1year',
   };
 
   useEffect(() => {
@@ -44,20 +45,14 @@ function StockChart() {
         
         const response = await axios.get(`${baseUrl}/api/stock`, {
           params: {
-            interval: TIME_PERIODS[timeScale]
+            interval: TIME_PERIODS[timeScale] // currently set to '1D' by default
           }
         });
 
-        // Add these console.logs
         console.log('Full API Response:', response);
         console.log('Response Data:', response.data);
-
-        // Check if response has the expected structure
-        if (!response.data.values || !Array.isArray(response.data.values)) {
-          throw new Error('Invalid data format received from API');
-        }
         
-        // Reverse the array to show oldest to newest
+        // Reverse array to show oldest to newest
         const values = [...response.data.values].reverse();
         
         // Transform API response into chart data format
@@ -65,14 +60,12 @@ function StockChart() {
           labels: values.map(item => {
             try {
               const date = new Date(item.datetime);
-              if (isNaN(date)) {
-                throw new Error('Invalid date');
-              }
+              if (isNaN(date)) { throw new Error('Invalid date'); }
               // Format date based on timeScale
               if (timeScale === '1D') {
-                return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // 12:00 PM
               } else {
-                return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+                return date.toLocaleDateString([], { month: 'short', day: 'numeric' }); // Oct 5
               }
             } catch (e) {
               console.error('Date parsing error:', e);
@@ -100,6 +93,7 @@ function StockChart() {
     fetchStockData();
   }, [timeScale]); // Refetch when timeScale changes
 
+  // when user selects a time interval
   const handleZoomChange = (period) => {
     setTimeScale(period);
   };
