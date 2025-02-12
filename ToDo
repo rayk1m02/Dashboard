@@ -1,1 +1,15 @@
 Understand how stockchart.js currently works
+
+Add 1 YR time interval
+based on selected time interval, make x-axis labels reflect it and have PFE stock data respond to it 
+
+connect PFE in stock panel, so when user clicks it, it shows in chart
+be able to select multuple stocks
+be able to view an all stocks chart with line of best fit
+
+Stock Panel
+- have company name then (stock abbreviation) 
+- search feature for a stock
+
+
+
