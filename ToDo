@@ -1,7 +1,9 @@
 server.js 
-- startdate should dynamically change based on interval
-- the api paramaters are not being properly used together
+- 1 day interval x-axis labels are all the same
+- 1 year interval Error:
+Failed to fetch stock data: Spread syntax requires ...iterable not be null or undefined
 
+Change the output data size? to 12 data points?
 
 connect PFE in stock panel, so when user clicks it, it shows in chart
 be able to select multuple stocks
