@@ -29,7 +29,7 @@ ChartJS.register(
 function StockChart() {
   const [stockData, setStockData] = useState(null);
   const [error, setError] = useState(null);
-  const [timeScale, setTimeScale] = useState('1D');
+  const [timeScale, setTimeScale] = useState('1H');
 
   const TIME_PERIODS = {
     '1H': '1h',
