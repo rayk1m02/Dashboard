@@ -32,10 +32,10 @@ function StockChart() {
   const [timeScale, setTimeScale] = useState('1D');
 
   const TIME_PERIODS = {
+    '1H': '1h',
     '1D': '1day',
     '1W': '1week',
     '1M': '1month',
-    '1Y': '1year',
   };
 
   useEffect(() => {
@@ -59,18 +59,18 @@ function StockChart() {
         const chartData = {
           labels: values.map(item => {
             const date = new Date(item.datetime);
-            if (TIME_PERIODS[timeScale] === '1day') {
-              // Intraday: Show time
+            if (TIME_PERIODS[timeScale] === '1h') {
+              // Intraday (1H): Show time
               return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            } else if (TIME_PERIODS[timeScale] === '1day') {
+              // Daily (1D): Show date
+              return date.toLocaleDateString([], { month: 'short', day: 'numeric' })
             } else if (TIME_PERIODS[timeScale] === '1week') {
               // Weekly: Show date
               return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
             } else if (TIME_PERIODS[timeScale] === '1month') {
               // Monthly: Show month and year
               return date.toLocaleDateString([], { month: 'short', year: 'numeric' });
-            } else if (TIME_PERIODS[timeScale] === '1year') {
-              // Yearly: Show year only
-              return date.toLocaleDateString([], { year: 'numeric' });
             } else {
               // Fallback: Show raw datetime
               return item.datetime;
