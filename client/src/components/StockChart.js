@@ -66,7 +66,7 @@ function StockChart({ selectedStocks }) {
         const baseUrl = process.env.REACT_APP_API_URL || 'https://dashboard-310f.onrender.com';
         console.log('Fetching data from:', baseUrl); // Log the base URL
         
-        const response = await Promise.all(
+        const responses = await Promise.all(
           selectedStocks.map((symbol) =>
             axios.get(`${baseUrl}/api/stock`, {
               params: {symbol, interval: TIME_PERIODS[timeScale] } 
