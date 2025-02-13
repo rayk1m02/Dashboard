@@ -1,10 +1,10 @@
-connect PFE in stock panel, so when user clicks it, it shows in chart
-be able to select multuple stocks
-be able to view an all stocks chart with line of best fit
-
-Stock Panel
-- have company name and (stock abbreviation) 
-- add search feature for stocks
+Stock Panel 
+- Need the company name and stock abbreviation. for example, Pfizer (PFE)
+- Need the top ten most common healthcare stocks. and when selected, i need its graph to show on the stockChart.
+- I need to be able to select multiple stocks and have them show on the stockChart at once
+- I need a search feature to search for stocks that are not listed by default as the top ten.
 
 
-
+StockChart.js
+- I need the default view to be a general line graph of all the top ten stocks. So a line of best fit for all the stocks. 
+- When multuple stocks are chosen, they should be color coded and have a legend to show which color corresponds to which stock.
