@@ -48,7 +48,7 @@ const COLORS = [
  *                    
  */
 
-function StockChart() {
+function StockChart({ selectedStocks }) {
   const [stockData, setStockData] = useState(null);
   const [error, setError] = useState(null);
   const [timeScale, setTimeScale] = useState('1H');
@@ -132,7 +132,6 @@ function StockChart() {
           }
         });
         
-        // setStockData(chartData);
         setStockData({ labels, datasets });
       } catch (err) {
         setError(`Failed to fetch stock data: ${err.message}`);
