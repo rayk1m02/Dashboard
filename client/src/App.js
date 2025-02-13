@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import './App.css';
 import StockChart from './components/StockChart';
 import StockPanel from './components/StockPanel';
