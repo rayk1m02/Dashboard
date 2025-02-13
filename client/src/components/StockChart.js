@@ -74,8 +74,8 @@ function StockChart({ selectedStocks }) {
           )
         );
 
-        console.log('Full API Response:', response);
-        console.log('Response Data:', response.data);
+        console.log('Full API Response:', responses);
+        console.log('Response Data:', responses[0]?.data);
         
         const datasets = responses.map((response, index) => {
           // Reverse array to show oldest to newest
