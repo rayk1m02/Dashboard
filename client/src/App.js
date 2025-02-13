@@ -4,6 +4,8 @@ import StockPanel from './components/StockPanel';
 import SentimentPanel from './components/SentimentPanel';
 
 function App() {
+  const [selectedStocks, setSelectedStocks] = useState([]);
+
   return (
     <div className="min-h-screen bg-gray-100 p-4">
       <header className="mb-6">
@@ -13,12 +15,12 @@ function App() {
       <div className="grid grid-cols-4 gap-4">
         {/* Main chart area - spans 3 columns */}
         <div className="col-span-3 bg-white rounded-lg shadow p-4">
-          <StockChart />
+          <StockChart selectedStocks={selectedStocks}/>
         </div>
         
         {/* Stock list - takes 1 column */}
         <div className="col-span-1 bg-white rounded-lg shadow">
-          <StockPanel />
+          <StockPanel onSelectStocks={setSelectedStocks}/>
         </div>
         
         {/* Sentiment analysis - spans 3 columns */}
