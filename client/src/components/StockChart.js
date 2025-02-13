@@ -26,6 +26,15 @@ ChartJS.register(
   Legend 
 );
 
+/**
+ * 
+ * [Browser] → [StockChart.js] → [Your Server (server.js)] → [TwelveData API]
+                ↑                         |
+                |-------------------------|
+                     Returns stock data
+ *                    
+ */
+
 function StockChart() {
   const [stockData, setStockData] = useState(null);
   const [error, setError] = useState(null);
