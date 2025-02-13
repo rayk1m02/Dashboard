@@ -17,7 +17,7 @@ const DEFAULT_STOCKS = [
  * Document this file 
  */
 
-function StockPanel() {
+function StockPanel({ onSelectStocks }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStocks, setSelectedStocks] = useState([]);
 
@@ -36,7 +36,7 @@ function StockPanel() {
   const filteredStocks = DEFAULT_STOCKS.filter(
     (stock) =>
       stock.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      stoc.symbol.toLowerCase().includes(searchQuery.toLowerCase())
+      stock.symbol.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
