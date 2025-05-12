@@ -61,12 +61,17 @@ function StockChart({ selectedStocks }) {
   };
 
   useEffect(() => {
+    if (selectedStocks.length === 0) {
+      setStockData(null);
+      return;
+    }
+
     const fetchStockData = async () => {
       try {
         const baseUrl = process.env.REACT_APP_API_URL || 'https://dashboard-310f.onrender.com';
         console.log('Fetching data from:', baseUrl); // Log the base URL
         
-        const responses = await Promise.all(
+        const responses = await Promise.allSettled(
           selectedStocks.map((symbol) =>
             axios.get(`${baseUrl}/api/stock`, {
               params: {symbol, interval: TIME_PERIODS[timeScale] } 
@@ -74,10 +79,21 @@ function StockChart({ selectedStocks }) {
           )
         );
 
+        const validResponses = responses
+          .filter((res) => res.status === 'fulfilled')
+          .map((res) => res.value);
+
+        if (validResponses.length === 0) {
+          throw new Error('No valid stock data received.');
+        }
+
         console.log('Full API Response:', responses);
         console.log('Response Data:', responses[0]?.data);
         
         const datasets = responses.map((response, index) => {
+          if (!response.data || !response.data.values || !response.data.meta) {
+            throw new Error('Invalid API response for stock at index ${index}');
+          }
           // Reverse array to show oldest to newest
           const values = [...response.data.values].reverse();
           return {
@@ -130,7 +146,7 @@ function StockChart({ selectedStocks }) {
           } else {
             return item.datetime;
           }
-        });
+        }) || [];
         
         setStockData({ labels, datasets });
       } catch (err) {
@@ -138,12 +154,7 @@ function StockChart({ selectedStocks }) {
         console.error('Full error:', err);
       }
     };
-
-    if (selectedStocks.length > 0) {
-      fetchStockData();
-    } else {
-      setStockData(null); // Reset chart if no stocks are selected
-    }
+    fetchStockData()
   }, [selectedStocks, timeScale]); // Refetch when stocks or time scale is changed
 
   // when user selects a time interval
